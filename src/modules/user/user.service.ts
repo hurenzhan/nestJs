@@ -23,11 +23,6 @@ export class UserService {
         return entity;
     }
 
-    // async index() {
-    //     const entities = await this.userRepository.find();
-    //     return entities;
-    // }
-
     async show(id: string) {
         const entity = await this.userRepository.findOne(id);
 
@@ -57,13 +52,7 @@ export class UserService {
         return await this.userRepository.save(entity);
     }
 
-    // async update(id: string, data: Partial<PostDto>) {
-    //     const result = await this.userRepository.update(id, data);
-    //     return result;
-    // }
-
-    // async destroy(id: string) {
-    //     const result = await this.userRepository.delete(id);
-    //     return result;
-    // }
+    async findByName(name: string) {
+        return await this.userRepository.findOne({ name });
+    }
 }
