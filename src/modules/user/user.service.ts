@@ -24,7 +24,9 @@ export class UserService {
     }
 
     async show(id: string) {
-        const entity = await this.userRepository.findOne(id);
+        const entity = await this.userRepository.findOne(id, {
+            relations: ['posts']
+        });
 
         if (!entity) {
             throw new BadRequestException('没有找到用户。');
@@ -41,7 +43,7 @@ export class UserService {
             throw new NotFoundException('没有找到用户。');
         };
         
-        const pass = await entity.comparePassword(password)
+        const pass = await entity.comparePassword(password);
 
         if (!pass) {
             throw new BadRequestException('密码验证失败，请重新输入正确的密码。')
@@ -54,5 +56,10 @@ export class UserService {
 
     async findByName(name: string) {
         return await this.userRepository.findOne({ name });
+    }
+
+    async liked(id: number) {
+        return this.userRepository
+        .findOne(id, { relations: ['voted', 'voted.user'] });
     }
 }
